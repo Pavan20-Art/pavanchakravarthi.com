@@ -328,7 +328,638 @@
           </div>
         </div>
       </section>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UX / UI Design — Pavan Chakravarthi</title>
+    <meta name="theme-color" content="#0b0b0c" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── Base reset (matches main portfolio) ── */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+      :root {
+        --c-bg:      #0b0b0c;
+        --c-surface: #1a1a1e;
+        --c-border:  rgba(255,255,255,.08);
+        --c-text:    #f0f0f0;
+        --c-muted:   #888;
+        --c-accent:  #c8fb57;
+        --r-card:    16px;
+        font-family: 'Inter', sans-serif;
+      }
+
+      body {
+        background: var(--c-bg);
+        color: var(--c-text);
+        min-height: 100vh;
+      }
+
+      /* ── Container ── */
+      .container {
+        width: min(1200px, 100% - 4rem);
+        margin-inline: auto;
+      }
+
+      /* ── Section ── */
+      .section--uxui {
+        padding: 5rem 0 0;
+        overflow: hidden;
+      }
+
+      /* ── Section header ── */
+      .kicker {
+        font-size: .75rem;
+        font-weight: 600;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: var(--c-accent);
+        margin-bottom: .75rem;
+      }
+      .section__title {
+        font-family: 'Fraunces', serif;
+        font-size: clamp(2rem, 5vw, 3.25rem);
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+      }
+      .section__title em {
+        font-style: italic;
+        color: var(--c-accent);
+      }
+      .section__lede {
+        font-size: 1rem;
+        color: var(--c-muted);
+        max-width: 52ch;
+        line-height: 1.7;
+      }
+      .section__head {
+        margin-bottom: 0;
+      }
+
+      /* ── Outer scroll wrapper ── */
+      .uxui-outer {
+        margin-top: 3rem;
+        position: relative;
+        padding-bottom: 1.5rem;
+      }
+
+      /* ── Hint bar ── */
+      .uxui-hint {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+        justify-content: center;
+        font-size: .75rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--c-muted);
+        margin-bottom: 1.25rem;
+        opacity: .7;
+      }
+      .uxui-hint__arrow {
+        font-size: 1rem;
+        animation: uxui-nudge 1.8s ease-in-out infinite alternate;
+      }
+      .uxui-hint__arrow:last-child { animation-direction: alternate-reverse; }
+      @keyframes uxui-nudge {
+        from { transform: translateX(0); }
+        to   { transform: translateX(6px); }
+      }
+
+      /* ── Horizontal scroll track ── */
+      .uxui-track {
+        display: flex;
+        gap: 1.5rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 0 max(2rem, calc((100vw - 1200px) / 2)) 1rem;
+        cursor: grab;
+        user-select: none;
+      }
+      .uxui-track::-webkit-scrollbar { display: none; }
+      .uxui-track.is-dragging { cursor: grabbing; }
+
+      /* ── Individual card ── */
+      .uxui-card {
+        flex: 0 0 320px;
+        scroll-snap-align: start;
+        display: flex;
+        flex-direction: column;
+        gap: .875rem;
+        transition: transform .25s ease;
+      }
+      .uxui-card:hover { transform: translateY(-4px); }
+
+      /* ── Figma iframe wrapper ── */
+      .uxui-card__frame {
+        width: 320px;
+        height: 580px;
+        border-radius: var(--r-card);
+        overflow: hidden;
+        background: var(--c-surface);
+        border: 1px solid var(--c-border);
+        box-shadow: 0 8px 32px rgba(0,0,0,.35);
+        position: relative;
+        transition: box-shadow .3s ease;
+      }
+      .uxui-card:hover .uxui-card__frame {
+        box-shadow: 0 16px 48px rgba(0,0,0,.5),
+                    0 0 0 1px var(--c-accent);
+      }
+      .uxui-card__frame iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+        pointer-events: none;
+      }
+      .uxui-card:hover .uxui-card__frame iframe {
+        pointer-events: auto;
+      }
+
+      /* ── CTA last card ── */
+      .uxui-card__frame--cta {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        background: linear-gradient(135deg, var(--c-surface) 0%, rgba(200,251,87,.06) 100%);
+      }
+      .uxui-cta__label {
+        font-size: 1rem;
+        font-weight: 600;
+        text-align: center;
+        color: var(--c-text);
+        padding: 0 2rem;
+        line-height: 1.4;
+      }
+
+      /* ── Button ── */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: .4rem;
+        padding: .7rem 1.4rem;
+        border-radius: 999px;
+        font-size: .875rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: opacity .2s, transform .15s;
+      }
+      .btn:hover { opacity: .85; transform: translateY(-1px); }
+      .btn--primary {
+        background: var(--c-accent);
+        color: #0b0b0c;
+      }
+
+      /* ── Card meta row ── */
+      .uxui-card__info {
+        display: flex;
+        align-items: flex-start;
+        gap: .75rem;
+        padding: 0 .25rem;
+      }
+      .uxui-card__num {
+        font-family: 'Fraunces', serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--c-accent);
+        line-height: 1;
+        flex-shrink: 0;
+        margin-top: .1rem;
+      }
+      .uxui-card__title {
+        font-size: .9rem;
+        font-weight: 600;
+        color: var(--c-text);
+        margin: 0 0 .15rem;
+      }
+      .uxui-card__sub {
+        font-size: .75rem;
+        color: var(--c-muted);
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+      }
+
+      /* ── Progress bar ── */
+      .uxui-progress {
+        height: 2px;
+        background: var(--c-border);
+        margin: 1.25rem max(2rem, calc((100vw - 1200px) / 2)) 0;
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .uxui-progress__bar {
+        height: 100%;
+        background: var(--c-accent);
+        border-radius: 99px;
+        width: 0%;
+        transition: width .1s linear;
+      }
+
+      /* ── Arrow nav ── */
+      .uxui-nav {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1.25rem;
+        padding-bottom: 2.5rem;
+      }
+      .uxui-nav__btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid var(--c-border);
+        background: transparent;
+        color: var(--c-text);
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background .2s, border-color .2s, color .2s;
+      }
+      .uxui-nav__btn:hover {
+        background: var(--c-accent);
+        border-color: var(--c-accent);
+        color: #0b0b0c;
+      }
+      .uxui-nav__count {
+        font-size: .8rem;
+        color: var(--c-muted);
+        min-width: 3.5rem;
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ── CTA row below track ── */
+      .work-cta {
+        display: flex;
+        justify-content: center;
+        padding: 2.5rem 0 4rem;
+      }
+
+      /* ── Responsive ── */
+      @media (max-width: 600px) {
+        .uxui-card { flex: 0 0 80vw; }
+        .uxui-card__frame { width: 80vw; height: 440px; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <section id="uxui" class="section--uxui">
+      <div class="container">
+        <div class="section__head">
+          <p class="kicker">UX / UI Design</p>
+          <h2 class="section__title">
+            Product thinking, <em>pixel perfect.</em>
+          </h2>
+          <p class="section__lede">
+            23 screens from the TodayTelugu news app — end‑to‑end UX process from empathy mapping
+            through wireframes to high‑fidelity prototype. Scroll right to explore every screen.
+          </p>
+        </div>
+      </div>
+
+      <!-- Horizontal scroll track -->
+      <div class="uxui-outer">
+        <div class="uxui-hint" aria-hidden="true">
+          <span class="uxui-hint__arrow">←</span>
+          <span>drag or scroll to explore</span>
+          <span class="uxui-hint__arrow">→</span>
+        </div>
+        <div class="uxui-track" id="uxuiTrack">
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Splash / Onboarding"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">01</span>
+              <div><p class="uxui-card__title">Splash &amp; Onboarding</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Home Feed"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">02</span>
+              <div><p class="uxui-card__title">Home Feed</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Category Navigation"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">03</span>
+              <div><p class="uxui-card__title">Category Navigation</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Article Detail"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">04</span>
+              <div><p class="uxui-card__title">Article Detail</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Search"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">05</span>
+              <div><p class="uxui-card__title">Search</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Bookmarks"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">06</span>
+              <div><p class="uxui-card__title">Bookmarks</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Notifications"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">07</span>
+              <div><p class="uxui-card__title">Notifications</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — User Profile"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">08</span>
+              <div><p class="uxui-card__title">User Profile</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Settings"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">09</span>
+              <div><p class="uxui-card__title">Settings</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Breaking News"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">10</span>
+              <div><p class="uxui-card__title">Breaking News</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Video Player"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">11</span>
+              <div><p class="uxui-card__title">Video Player</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Dark Mode"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">12</span>
+              <div><p class="uxui-card__title">Dark Mode</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Trending Topics"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">13</span>
+              <div><p class="uxui-card__title">Trending Topics</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Share &amp; Save"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">14</span>
+              <div><p class="uxui-card__title">Share &amp; Save</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Login / Register"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">15</span>
+              <div><p class="uxui-card__title">Login / Register</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Push Preferences"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">16</span>
+              <div><p class="uxui-card__title">Push Preferences</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Regional Filter"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">17</span>
+              <div><p class="uxui-card__title">Regional Filter</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Live Updates"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">18</span>
+              <div><p class="uxui-card__title">Live Updates</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Comment Section"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">19</span>
+              <div><p class="uxui-card__title">Comment Section</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Photo Gallery"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">20</span>
+              <div><p class="uxui-card__title">Photo Gallery</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Polls &amp; Quizzes"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">21</span>
+              <div><p class="uxui-card__title">Polls &amp; Quizzes</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card">
+            <div class="uxui-card__frame">
+              <iframe src="https://www.figma.com/embed?embed_host=astra&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FpxD4JFFUVWFm4JCaCxaCAG%2Fwedsites%3Fnode-id%3D97-2%26t%3DSNeXpAuNHXRAtNcN-1" allowfullscreen loading="lazy" title="TodayTelugu — Accessibility Mode"></iframe>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">22</span>
+              <div><p class="uxui-card__title">Accessibility Mode</p><p class="uxui-card__sub">TodayTelugu · News App</p></div>
+            </div>
+          </div>
+
+          <div class="uxui-card uxui-card--cta">
+            <div class="uxui-card__frame uxui-card__frame--cta">
+              <p class="uxui-cta__label">View full prototype in Figma</p>
+              <a class="btn btn--primary"
+                 href="https://www.figma.com/design/pxD4JFFUVWFm4JCaCxaCAG/wedsites?node-id=97-2&t=SNeXpAuNHXRAtNcN-1"
+                 target="_blank" rel="noopener">Open in Figma ↗</a>
+            </div>
+            <div class="uxui-card__info">
+              <span class="uxui-card__num">23</span>
+              <div><p class="uxui-card__title">Full Prototype</p><p class="uxui-card__sub">TodayTelugu · 23 Screens</p></div>
+            </div>
+          </div>
+
+        </div><!-- /uxui-track -->
+
+        <!-- Progress bar -->
+        <div class="uxui-progress" aria-hidden="true">
+          <div class="uxui-progress__bar" id="uxuiBar"></div>
+        </div>
+
+        <!-- Nav arrows -->
+        <div class="uxui-nav" aria-label="Scroll controls">
+          <button class="uxui-nav__btn" id="uxuiPrev" aria-label="Scroll left" type="button">←</button>
+          <span class="uxui-nav__count"><span id="uxuiCurrent">1</span> / 23</span>
+          <button class="uxui-nav__btn" id="uxuiNext" aria-label="Scroll right" type="button">→</button>
+        </div>
+
+      </div><!-- /uxui-outer -->
+
+      <div class="container">
+        <div class="work-cta">
+          <a class="btn btn--primary"
+             href="https://www.figma.com/design/pxD4JFFUVWFm4JCaCxaCAG/wedsites?node-id=97-2&t=SNeXpAuNHXRAtNcN-1"
+             target="_blank" rel="noopener">Open full project in Figma ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      (function () {
+        const track   = document.getElementById('uxuiTrack');
+        const bar     = document.getElementById('uxuiBar');
+        const counter = document.getElementById('uxuiCurrent');
+        const prev    = document.getElementById('uxuiPrev');
+        const next    = document.getElementById('uxuiNext');
+        const TOTAL   = 23;
+        const STEP    = 340;
+
+        if (!track) return;
+
+        /* Vertical wheel → horizontal scroll */
+        track.parentElement.addEventListener('wheel', function (e) {
+          if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            e.preventDefault();
+            track.scrollLeft += e.deltaY * 1.4;
+          }
+        }, { passive: false });
+
+        /* Progress bar + counter */
+        function onScroll () {
+          const max = track.scrollWidth - track.clientWidth;
+          const pct = max > 0 ? (track.scrollLeft / max) * 100 : 0;
+          bar.style.width = pct + '%';
+          const idx = Math.round((track.scrollLeft / max) * (TOTAL - 1)) + 1;
+          counter.textContent = Math.min(idx, TOTAL);
+        }
+        track.addEventListener('scroll', onScroll, { passive: true });
+
+        /* Arrow buttons */
+        prev.addEventListener('click', () => track.scrollBy({ left: -STEP, behavior: 'smooth' }));
+        next.addEventListener('click', () => track.scrollBy({ left:  STEP, behavior: 'smooth' }));
+
+        /* Drag to scroll */
+        let isDragging = false, startX, startScroll;
+        track.addEventListener('mousedown', e => {
+          isDragging  = true;
+          startX      = e.pageX - track.offsetLeft;
+          startScroll = track.scrollLeft;
+          track.classList.add('is-dragging');
+        });
+        document.addEventListener('mouseup', () => {
+          isDragging = false;
+          track.classList.remove('is-dragging');
+        });
+        track.addEventListener('mousemove', e => {
+          if (!isDragging) return;
+          e.preventDefault();
+          track.scrollLeft = startScroll - (e.pageX - track.offsetLeft - startX) * 1.2;
+        });
+
+        onScroll();
+      })();
+    </script>
+  </body>
+</html>
       <!-- About -->
       <section id="about" class="section section--alt">
         <div class="container grid-2">
