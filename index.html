@@ -656,75 +656,81 @@
 
       
 
-    </div><!-- end rail -->
-  </div>
+    </div><!-- /uxui-track -->
 
-  <!-- ── NAV ── -->
-  <div class="rail-nav">
-    <button class="rail-btn" id="btnPrev" aria-label="Scroll left">
-      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-    </button>
-    <button class="rail-btn" id="btnNext" aria-label="Scroll right">
-      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-    <div class="rail-progress">
-      <div class="rail-progress-fill" id="progressFill"></div>
-    </div>
-    <span class="rail-counter" id="counter">01 / 07</span>
-  </div>
+        <div class="uxui-progress" aria-hidden="true">
+          <div class="uxui-progress__bar" id="uxuiBar"></div>
+        </div>
 
-</section>
+        <div class="uxui-nav" aria-label="Scroll controls">
+          <button class="uxui-nav__btn" id="uxuiPrev" aria-label="Scroll left" type="button">←</button>
+          <span class="uxui-nav__count"><span id="uxuiCurrent">1</span> / 5</span>
+          <button class="uxui-nav__btn" id="uxuiNext" aria-label="Scroll right" type="button">→</button>
+        </div>
 
-<script>
-  const rail = document.getElementById('rail');
-  const btnPrev = document.getElementById('btnPrev');
-  const btnNext = document.getElementById('btnNext');
-  const fill = document.getElementById('progressFill');
-  const counter = document.getElementById('counter');
-  const cards = rail.querySelectorAll('.card');
-  const total = cards.length;
+      </div><!-- /uxui-outer -->
 
-  function updateProgress() {
-    const scrollLeft = rail.scrollLeft;
-    const maxScroll = rail.scrollWidth - rail.clientWidth;
-    const pct = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
-    fill.style.width = Math.max(12, pct) + '%';
+      <div class="container">
+        <div class="work-cta">
+          <a class="btn btn--primary"
+             href="https://www.figma.com/design/pxD4JFFUVWFm4JCaCxaCAG/wedsites?node-id=97-2&t=kr4syhrJTcrsSY6G-1"
+             target="_blank" rel="noopener">Open full project in Figma ↗</a>
+        </div>
+      </div>
+    </section>
 
-    // Find current card
-    let current = 0;
-    cards.forEach((c, i) => {
-      if (c.offsetLeft <= scrollLeft + 40) current = i;
-    });
-    counter.textContent = String(current + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
-  }
+    <script>
+      (function () {
+        const track   = document.getElementById('uxuiTrack');
+        const bar     = document.getElementById('uxuiBar');
+        const counter = document.getElementById('uxuiCurrent');
+        const prev    = document.getElementById('uxuiPrev');
+        const next    = document.getElementById('uxuiNext');
+        const TOTAL   = 5;
+        const STEP    = 340;
 
-  btnNext.addEventListener('click', () => {
-    rail.scrollBy({ left: 360, behavior: 'smooth' });
-  });
+        if (!track) return;
 
-  btnPrev.addEventListener('click', () => {
-    rail.scrollBy({ left: -360, behavior: 'smooth' });
-  });
+        track.parentElement.addEventListener('wheel', function (e) {
+          if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            e.preventDefault();
+            track.scrollLeft += e.deltaY * 1.4;
+          }
+        }, { passive: false });
 
-  rail.addEventListener('scroll', updateProgress, { passive: true });
-  updateProgress();
+        function onScroll () {
+          const max = track.scrollWidth - track.clientWidth;
+          const pct = max > 0 ? (track.scrollLeft / max) * 100 : 0;
+          bar.style.width = pct + '%';
+          const idx = Math.round((track.scrollLeft / max) * (TOTAL - 1)) + 1;
+          counter.textContent = Math.min(idx, TOTAL);
+        }
+        track.addEventListener('scroll', onScroll, { passive: true });
 
-  // Drag to scroll
-  let isDown = false, startX, scrollStart;
-  rail.addEventListener('mousedown', e => {
-    isDown = true;
-    startX = e.pageX - rail.offsetLeft;
-    scrollStart = rail.scrollLeft;
-    rail.style.userSelect = 'none';
-  });
-  document.addEventListener('mouseup', () => { isDown = false; rail.style.userSelect = ''; });
-  document.addEventListener('mousemove', e => {
-    if (!isDown) return;
-    const x = e.pageX - rail.offsetLeft;
-    rail.scrollLeft = scrollStart - (x - startX);
-  });
-</script>
-</body>
+        prev.addEventListener('click', () => track.scrollBy({ left: -STEP, behavior: 'smooth' }));
+        next.addEventListener('click', () => track.scrollBy({ left:  STEP, behavior: 'smooth' }));
+
+        let isDragging = false, startX, startScroll;
+        track.addEventListener('mousedown', e => {
+          isDragging  = true;
+          startX      = e.pageX - track.offsetLeft;
+          startScroll = track.scrollLeft;
+          track.classList.add('is-dragging');
+        });
+        document.addEventListener('mouseup', () => {
+          isDragging = false;
+          track.classList.remove('is-dragging');
+        });
+        track.addEventListener('mousemove', e => {
+          if (!isDragging) return;
+          e.preventDefault();
+          track.scrollLeft = startScroll - (e.pageX - track.offsetLeft - startX) * 1.2;
+        });
+
+        onScroll();
+      })();
+    </script>
+  </body>
 </html>
     
       <!-- About -->
